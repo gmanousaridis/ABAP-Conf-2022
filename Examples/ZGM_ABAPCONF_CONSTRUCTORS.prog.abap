@@ -289,5 +289,3 @@ START-OF-SELECTION.
     IN
     ( VALUE #( BASE ls_order price = COND #( WHEN lt_gift_client IS INITIAL THEN ls_order-price ELSE 0 ) ) )
   ).
-
-  BREAK-POINT.
