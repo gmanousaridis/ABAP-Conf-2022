@@ -177,7 +177,7 @@ START-OF-SELECTION.
 
 ** STRING MANIPULATIONS *******************************************************************************************************************
 
-  "Construct txt
+  "Construct txt (e.g. for dynamic where conditions)
   DATA(lv_overdue_names) = REDUCE string( INIT s TYPE string
                                           FOR ls_order IN lt_orders WHERE ( due < sy-datum )
                                           NEXT s = |{ COND #( WHEN s IS NOT INITIAL THEN |{ s }, | ) }{ ls_order-name }| ).
