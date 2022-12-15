@@ -248,9 +248,8 @@ START-OF-SELECTION.
 
   DATA(lv_order_price) = VALUE p_13_2( lt_orders[ ord_num = 898211 ]-price OPTIONAL ).
 
-** VALUE WITH FOR ITTERATING DATES *********************************************************************************************************
+** VALUE FOR ITTERATING DATES *************************************************************************************************************
   "Gather Month/Year pairs between dates
-
   TRY .
 
       DATA(lv_last_day_latest_date) = cl_epmh_dgut_date_calc=>add_days( iv_no_of_days = -1
@@ -261,6 +260,19 @@ START-OF-SELECTION.
                                                THEN cl_epmh_dgut_date_calc=>add_months( iv_date = date iv_no_of_months = 1 )
                                                UNTIL date > lv_last_day_latest_date
                                                ( month = date+4(2) year = date+0(4) ) ).
+    CATCH cx_epmh_dg_exception.
+  ENDTRY.
+
+  "Gather Single dates from Select Options
+  TRY.
+      DATA(lt_workdates) = VALUE sztg_datst(
+        BASE VALUE #( FOR ls_workdate IN lr_workdate WHERE ( option = 'EQ' ) ( CONV dats( ls_workdate-low ) ) )
+        FOR ls_workdate IN lr_workdate WHERE ( option = 'BT' )
+        FOR date = ls_workdate-low
+        THEN cl_epmh_dgut_date_calc=>add_days( iv_date = date iv_no_of_days = 1 )
+        UNTIL date > ls_workdate-high
+        ( CONV dats( date ) )
+      ).
     CATCH cx_epmh_dg_exception.
   ENDTRY.
 
